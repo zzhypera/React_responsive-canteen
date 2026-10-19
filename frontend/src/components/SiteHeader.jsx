@@ -53,6 +53,7 @@ export default function SiteHeader() {
         <nav id="site-navigation" className={`main-nav ${mobileOpen ? 'main-nav-open' : ''}`} aria-label="Main navigation">
           <NavLink to="/" end onClick={close}>Home</NavLink>
           <NavLink to="/menu" onClick={close}>Menu</NavLink>
+          <NavLink to="/favorites" onClick={close}>Favorites</NavLink>
           {user && <NavLink to="/orders" onClick={close}>My orders</NavLink>}
           {user?.role === 'admin' && <NavLink to="/admin" onClick={close}>Dashboard</NavLink>}
         </nav>

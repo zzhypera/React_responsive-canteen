@@ -5,6 +5,7 @@ import SiteFooter from './components/SiteFooter'
 import Toast from './components/Toast'
 import Home from './pages/Home'
 import Menu from './pages/Menu'
+import Favorites from './pages/Favorites'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import Login from './pages/Login'
@@ -32,6 +33,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/menu" element={<Menu />} />
+          <Route path="/favorites" element={<Favorites />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
           <Route path="/login" element={<Login />} />

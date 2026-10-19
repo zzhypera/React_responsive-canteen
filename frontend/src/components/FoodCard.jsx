@@ -1,9 +1,10 @@
 import { Plus, Check, Clock3, Heart } from 'lucide-react'
-import { useState } from 'react'
+import { useApp } from '../context/AppContext'
 import { peso } from '../utils/format'
 
 export default function FoodCard({ product, onAdd, compact = false }) {
-  const [saved, setSaved] = useState(false)
+  const { favorites, toggleFavorite } = useApp()
+  const saved = favorites.includes(product.id)
   return (
     <article className={`food-card ${compact ? 'food-card-compact' : ''}`}>
       <div className="food-image-wrap">
@@ -16,7 +17,7 @@ export default function FoodCard({ product, onAdd, compact = false }) {
         <span className={`availability-pill ${product.available ? 'available' : 'unavailable'}`}>
           <span />{product.available ? 'Available' : 'Sold out'}
         </span>
-        <button type="button" className={`favorite-button ${saved ? 'favorite-active' : ''}`} aria-label={saved ? 'Remove from favorites' : 'Add to favorites'} onClick={() => setSaved((value) => !value)}>
+        <button type="button" className={`favorite-button ${saved ? 'favorite-active' : ''}`} aria-label={saved ? 'Remove from favorites' : 'Add to favorites'} aria-pressed={saved} onClick={() => toggleFavorite(product.id)}>
           <Heart size={17} fill={saved ? 'currentColor' : 'none'} />
         </button>
       </div>

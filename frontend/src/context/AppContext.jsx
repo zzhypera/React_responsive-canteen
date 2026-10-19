@@ -31,12 +31,13 @@ export function AppProvider({ children }) {
   const [slots, setSlots] = useState(saved?.slots ?? defaultSlots)
   const [orders, setOrders] = useState(saved?.orders ?? [])
   const [cart, setCart] = useState(saved?.cart ?? [])
+  const [favorites, setFavorites] = useState(saved?.favorites ?? [])
   const [user, setUser] = useState(saved?.user ?? null)
   const [notice, setNotice] = useState(null)
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ products, categories, slots, orders, cart, user }))
-  }, [products, categories, slots, orders, cart, user])
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ products, categories, slots, orders, cart, favorites, user }))
+  }, [products, categories, slots, orders, cart, favorites, user])
 
   const notify = (message, type = 'success') => {
     setNotice({ message, type, id: Date.now() })
@@ -56,6 +57,10 @@ export function AppProvider({ children }) {
 
   const updateCartQuantity = (id, quantity) => {
     setCart((current) => quantity <= 0 ? current.filter((item) => item.id !== id) : current.map((item) => item.id === id ? { ...item, quantity } : item))
+  }
+
+  const toggleFavorite = (id) => {
+    setFavorites((current) => current.includes(id) ? current.filter((favoriteId) => favoriteId !== id) : [...current, id])
   }
 
   const placeOrder = ({ pickupSlotId, notes = '' }) => {
@@ -89,7 +94,7 @@ export function AppProvider({ children }) {
 
   const value = {
     products, setProducts, categories, setCategories, slots, setSlots, orders, setOrders,
-    cart, setCart, user, setUser, notice, notify, addToCart, updateCartQuantity, placeOrder,
+    cart, setCart, favorites, toggleFavorite, user, setUser, notice, notify, addToCart, updateCartQuantity, placeOrder,
   }
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>
