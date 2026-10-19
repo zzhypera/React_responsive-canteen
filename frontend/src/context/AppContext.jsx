@@ -14,7 +14,11 @@ const defaultSlots = [
 function loadState() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY)
-    return saved ? JSON.parse(saved) : null
+    if (!saved) return null
+    const state = JSON.parse(saved)
+    // Older preview sessions were browser-only and must not count as authenticated accounts.
+    if (!localStorage.getItem('canteen_api_token')) state.user = null
+    return state
   } catch {
     return null
   }

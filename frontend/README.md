@@ -12,14 +12,13 @@ npm run dev
 
 Open `http://localhost:5173`.
 
-## Local preview accounts
+## Accounts
 
-The frontend currently has a **local UI preview mode** for quickly checking the student and admin pages. It stores demo products, cart, orders, slot setup, and preview user in browser `localStorage`.
+Student registration asks for a full name, student ID number, email address, and password. The registration and sign-in forms use the Laravel `/api/register` and `/api/login` endpoints. Public registration always creates a student account; administrator accounts must be provisioned by an administrator.
 
-- Student: `student@campus.local` / `student123`
-- Administrator: `admin@canteen.local` / `admin123`
+The sign-in page includes quick-fill buttons for the seeded local admin (`admin@canteen.local` / `admin123`) and demo student (`student@campus.local` / `student123`). The buttons fill the form; Laravel still performs the sign-in.
 
-These credentials are not secure server authentication and must not be used in production. Connect the forms to the Laravel API before deploying.
+The rest of the ordering UI still has local preview data and actions. Those features are not yet fully connected to the Laravel API.
 
 ## Project organization
 
@@ -40,4 +39,4 @@ src/
 
 Set `VITE_API_BASE_URL` in `.env` if the API is hosted separately, for example `VITE_API_BASE_URL=http://127.0.0.1:8000/api`. Vite proxies `/api` to Laravel on `http://127.0.0.1:8000` by default.
 
-The `src/services/api.js` Axios instance already adds a stored bearer token as an `Authorization` header. Replace the local preview actions in `AppContext.jsx` and the login/registration pages with the Laravel endpoint calls. The starter backend in the submitted ZIP did not yet contain the proposal's application tables or API routes, so they need to be added and tested before the application is considered a connected full-stack system.
+The `src/services/api.js` Axios instance adds a stored bearer token as an `Authorization` header. Registration and sign-in now use the Laravel endpoints. Menu, cart, orders, and admin actions still use local preview state, so the full application is not yet connected end to end.
