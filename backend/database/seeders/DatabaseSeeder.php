@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\MenuItem;
+use App\Models\Order;
 use App\Models\PickupSlot;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -18,9 +19,14 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Canteen Administrator', 'id_number' => null, 'password' => Hash::make('admin123'), 'role' => 'admin'],
         );
 
-        User::updateOrCreate(
+        $student = User::updateOrCreate(
             ['email' => 'student@campus.local'],
             ['name' => 'Campus Student', 'id_number' => 'STUDENT-DEMO-001', 'password' => Hash::make('student123'), 'role' => 'student'],
+        );
+
+        $secondStudent = User::updateOrCreate(
+            ['email' => 'student2@campus.local'],
+            ['name' => 'Campus Student Two', 'id_number' => 'STUDENT-DEMO-002', 'password' => Hash::make('student123'), 'role' => 'student'],
         );
 
         $catalog = [
@@ -71,6 +77,96 @@ class DatabaseSeeder extends Seeder
             '12:00 PM – 12:30 PM',
         ] as $time) {
             PickupSlot::firstOrCreate(['slot_time' => $time], ['max_orders' => 12, 'is_open' => true]);
+        }
+
+        $pickupSlots = PickupSlot::query()->orderBy('id')->get()->values();
+        $menuItemsByName = MenuItem::query()->get()->keyBy('name');
+
+        $sampleOrders = [
+            [
+                'order_number' => 'DEMO-1001',
+                'user' => $student,
+                'pickup_slot' => $pickupSlots[0],
+                'status' => 'Completed',
+                'notes' => 'Please include an extra serving of sauce.',
+                'placed_at' => now()->subDay(),
+                'items' => ['Chicken Rice Meal' => 1, 'Iced Coffee' => 1],
+            ],
+            [
+                'order_number' => 'DEMO-1002',
+                'user' => $secondStudent,
+                'pickup_slot' => $pickupSlots[1],
+                'status' => 'Ready',
+                'notes' => null,
+                'placed_at' => now()->subMinutes(35),
+                'items' => ['Campus Burger' => 1, 'French Fries' => 1, 'Lemonade' => 1],
+            ],
+            [
+                'order_number' => 'DEMO-1003',
+                'user' => $student,
+                'pickup_slot' => $pickupSlots[2],
+                'status' => 'Preparing',
+                'notes' => 'No cutlery needed.',
+                'placed_at' => now()->subMinutes(20),
+                'items' => ['Spaghetti Meal' => 1, 'Fruit Tea' => 1, 'Chocolate Brownie' => 1],
+            ],
+            [
+                'order_number' => 'DEMO-1004',
+                'user' => $secondStudent,
+                'pickup_slot' => $pickupSlots[3],
+                'status' => 'Pending',
+                'notes' => null,
+                'placed_at' => now()->subMinutes(5),
+                'items' => ['Sinigang na Baboy' => 1, 'Iced Matcha Latte' => 1],
+            ],
+            [
+                'order_number' => 'DEMO-1005',
+                'user' => $student,
+                'pickup_slot' => $pickupSlots[4],
+                'status' => 'Cancelled',
+                'notes' => null,
+                'placed_at' => now()->subHours(2),
+                'items' => ['Veggie Wrap' => 1, 'Mango Smoothie' => 1],
+            ],
+        ];
+
+        foreach ($sampleOrders as $sampleOrder) {
+            $lineItems = [];
+            $totalAmount = 0;
+
+            foreach ($sampleOrder['items'] as $menuItemName => $quantity) {
+                $menuItem = $menuItemsByName->get($menuItemName);
+
+                if ($menuItem === null) {
+                    throw new \RuntimeException("Seed menu item [{$menuItemName}] was not found.");
+                }
+
+                $lineItems[] = [
+                    'menu_item_id' => $menuItem->id,
+                    'quantity' => $quantity,
+                    'unit_price' => $menuItem->price,
+                    'created_at' => $sampleOrder['placed_at'],
+                    'updated_at' => $sampleOrder['placed_at'],
+                ];
+                $totalAmount += (float) $menuItem->price * $quantity;
+            }
+
+            $placedAt = $sampleOrder['placed_at'];
+            $order = Order::updateOrCreate(
+                ['order_number' => $sampleOrder['order_number']],
+                [
+                    'user_id' => $sampleOrder['user']->id,
+                    'pickup_slot_id' => $sampleOrder['pickup_slot']->id,
+                    'status' => $sampleOrder['status'],
+                    'total_amount' => number_format($totalAmount, 2, '.', ''),
+                    'notes' => $sampleOrder['notes'],
+                    'created_at' => $placedAt,
+                    'updated_at' => $placedAt,
+                ],
+            );
+
+            $order->items()->delete();
+            $order->items()->createMany($lineItems);
         }
     }
 }

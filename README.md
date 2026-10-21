@@ -2,9 +2,10 @@
 
 **Developer:** Clarke David Murcia  
 **Project:** BSIT 3 - Section 1 || capstone project  
+**Client:** Students and canteen staff of Mater Dei College  
 **Theme:** A responsive campus canteen portal for browsing food, ordering ahead, and collecting meals during scheduled pickup slots.
 
-The system gives students a convenient way to explore the canteen menu and prepare orders. Canteen staff can manage menu categories, menu items, pickup slots, and order status from an admin dashboard.
+The system gives Mater Dei College students a convenient way to explore the canteen menu and prepare orders. Canteen staff can manage menu categories, menu items, pickup slots, and order status from an admin dashboard.
 
 ## Features
 
@@ -29,7 +30,7 @@ Some frontend ordering pages currently use local preview data; registration and 
 ```text
 backend/       Laravel API, migrations, models, seeders
 frontend/      React single-page application
-docs/          ERD and screenshot folder
+docs/          Project proposal, presentation, ERD, workflow guide, and screenshots
 ```
 
 ## Setup
@@ -67,14 +68,15 @@ Open the Vite URL shown in the terminal (normally `http://localhost:5173`). `fro
 
 ## Seeded demo accounts
 
-The seeder creates one admin and one student account:
+The seeder creates one admin and two student accounts, along with canteen menu items, pickup slots, and example orders in pending, preparing, ready, completed, and cancelled states:
 
 | Role | Email | Password |
 |---|---|---|
 | Admin | `admin@canteen.local` | `admin123` |
 | Student | `student@campus.local` | `student123` |
+| Student | `student2@campus.local` | `student123` |
 
-These accounts are for local demonstrations. Do not use the demo passwords in a deployed environment.
+These seeded accounts are provided solely for demonstrating and reviewing the student and admin workflows locally. They are sample accounts, not real campus users; the sample orders are demonstration records. The credentials are public by design, so do not reuse them or deploy them in a live environment. Replace or remove the demo accounts and sample records before production use.
 
 ## API documentation
 
@@ -109,9 +111,21 @@ The ERD shows the six core application tables and their key relationships. Larav
 
 ![Campus Canteen Ordering System Entity Relationship Diagram](docs/ERD.png)
 
+## Project proposal
+
+Read the [Campus Canteen project proposal](docs/Campus_Canteen_ProjectProposal_Minimal.docx) for the project background and original scope.
+
+## Presentation
+
+See the [Campus Canteen presentation](docs/Campus_Canteen_Presentation.pptx) for the project proposal, design, features, technology stack, and implementation progress.
+
 ## Presentation and screenshots
 
 Application captures belong in [`docs/screenshots/`](docs/screenshots/). Suggested views are Home, Menu, Cart or Checkout, Orders, and Admin Dashboard. No screenshots were included with the project when these docs were prepared.
+
+See the [Git workflow guide](docs/GIT_WORKFLOW.md) for a suggested commit rhythm and project-specific commit message examples.
+
+See [project phases and checkpoints](docs/PROJECT_CHECKPOINTS.md) for the adapted 14-day assessment schedule and evidence checklist.
 
 ## Demo video
 
