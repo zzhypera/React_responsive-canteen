@@ -107,7 +107,7 @@ The admin resource entries also expose `GET` list routes; their individual `GET 
 
 The ERD shows the six core application tables and their key relationships. Laravel support tables such as sessions, password reset tokens, and Sanctum personal access tokens are omitted.
 
-![Campus Canteen Ordering System Entity Relationship Diagram](docs/erd.svg)
+![Campus Canteen Ordering System Entity Relationship Diagram](docs/ERD.png)
 
 ## Presentation and screenshots
 
