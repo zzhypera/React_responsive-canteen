@@ -2,7 +2,7 @@
 
 **Developer:** Clarke David Murcia  
 **Project:** BSIT 3 - Section 1 || capstone project  
-**Client:** Students and canteen staff of Mater Dei College  
+**Client:** Students, Faculty, and canteen staff of Mater Dei College  
 **Theme:** A responsive campus canteen portal for browsing food, ordering ahead, and collecting meals during scheduled pickup slots.
 
 The system gives Mater Dei College students a convenient way to explore the canteen menu and prepare orders. Canteen staff can manage menu categories, menu items, pickup slots, and order status from an admin dashboard.
